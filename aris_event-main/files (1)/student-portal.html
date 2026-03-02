@@ -1,0 +1,147 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Event Management System Student</title>
+ <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="student-portal.css">
+</head>
+
+<body>
+ <div id="login-screen">
+ <div class="lcard">
+ <div class="llogo">Event Management System</div>
+ <div class="lbadge">Student</div>
+ <h2>Welcome back </h2>
+ <p class="lsub">Browse and register for campus events.</p>
+ <div class="lerr" id="lerr"></div>
+ <div class="lfield"><label>Username</label><input type="text" id="un" placeholder="e.g. student" autocomplete="off"></div>
+ <div class="lfield"><label>Password</label><input type="password" id="pw" placeholder="Password"></div>
+ <button class="btn-login" id="btn-login">Sign In</button>
+ <div class="lhint"><strong>Demo:</strong> student / 123 &nbsp;|&nbsp; student2 / 123</div>
+ </div>
+ </div>
+ <div id="app">
+ <aside class="sb">
+ <div class="sb-head">
+ <div class="sb-logo">Event Management System</div>
+ <div class="sb-tag">Student</div>
+ </div>
+ <nav class="sb-nav">
+ <div class="nl">Menu</div>
+ <a class="ni active" id="nav-dash">Dashboard</a>
+ <a class="ni" id="nav-browse">Browse Events</a>
+ <a class="ni" id="nav-cal">Calendar</a>
+ <a class="ni" id="nav-mine">My Registrations</a>
+ <a class="ni" id="nav-ann">Announcements <span id="ann-nb" style="display:none;" class="new-badge">NEW</span></a>
+ <a class="ni" id="nav-fb">Feedback</a>
+ <div class="nl" style="margin-top:18px;">Other Portals</div>
+ <a class="ni" href="faculty-portal.html">Faculty Portal</a>
+ <a class="ni" href="admin-portal.html">Admin Portal</a>
+ </nav>
+ <div class="sb-foot">
+ <div class="uc">
+ <div class="uav">U</div>
+ <div>
+ <div class="uname-d" id="uname"></div>
+ <div class="urole-d">Student</div>
+ </div>
+ </div>
+ <button class="btn-lo" id="btn-logout">Sign Out</button>
+ </div>
+ </aside>
+ <main class="main">
+ <div class="pg active" id="pg-dash">
+ <div class="ph">
+ <h1>Dashboard</h1>
+ <p>Discover and register for upcoming campus events</p>
+ </div>
+ <div id="ann-dash-wrap"></div>
+ <div class="srow">
+ <div class="sbox">
+ <div class="si"></div>
+ <div class="sv" id="s-ev">0</div>
+ <div class="sl">Total Events</div>
+ </div>
+ <div class="sbox">
+ <div class="si"></div>
+ <div class="sv" id="s-reg">0</div>
+ <div class="sl">My Registrations</div>
+ </div>
+ <div class="sbox">
+ <div class="si"></div>
+ <div class="sv" id="s-ap">0</div>
+ <div class="sl">Approved Events</div>
+ </div>
+ </div>
+ <p style="font-size:14px;font-weight:600;margin-bottom:14px;">Featured Events</p>
+ <div class="egrid" id="feat-ev"></div>
+ </div>
+ <div class="pg" id="pg-browse">
+ <div class="ph">
+ <h1>Browse Events</h1>
+ <p>Find and register for events that interest you</p>
+ </div>
+ <input class="sbar" id="search" placeholder=" Search events by title or description">
+ <div class="egrid" id="browse-ev"></div>
+ </div>
+ <div class="pg" id="pg-cal">
+ <div class="ph">
+ <h1>Event Calendar</h1>
+ <p>See all events by date</p>
+ </div>
+ <div class="cw">
+ <div class="cn"><button class="cb" id="cal-prev"> Prev</button>
+ <h3 id="cal-lbl"></h3><button class="cb" id="cal-next">Next </button>
+ </div>
+ <div class="cgrid" id="cal-wd"></div>
+ <div class="cgrid" id="cal-days"></div>
+ </div>
+ </div>
+ <div class="pg" id="pg-mine">
+ <div class="ph">
+ <h1>My Registrations</h1>
+ <p>Events you have signed up for</p>
+ </div>
+ <div id="mine-cont"></div>
+ </div>
+ <!-- ANNOUNCEMENTS PAGE -->
+ <div class="pg" id="pg-ann">
+ <div class="ph">
+ <h1> Announcements</h1>
+ <p>System announcements from the administration</p>
+ </div>
+ <div id="ann-empty" class="emp" style="display:none;">No announcements at this time.</div>
+ <div class="ann-list" id="ann-list"></div>
+ </div>
+ <div class="pg" id="pg-fb">
+ <div class="ph">
+ <h1>Event Feedback</h1>
+ <p>Share your experience to help improve future events</p>
+ </div>
+ <div class="fc">
+ <div class="fg"><label>Select Event *</label><select id="fb-ev">
+ <option value="">-- Choose an event --</option>
+ </select></div>
+ <div class="fg"><label>Rating *</label><select id="fb-rt">
+ <option value="">-- Select rating --</option>
+ <option value="5"> Excellent</option>
+ <option value="4"> Good</option>
+ <option value="3"> Average</option>
+ <option value="2"> Poor</option>
+ <option value="1"> Very Poor</option>
+ </select></div>
+ <div class="fg"><label>Your Feedback *</label><textarea id="fb-txt" rows="5" placeholder="Share your experience"></textarea></div>
+ <button class="btn-sub" id="btn-fb">Submit Feedback</button>
+ </div>
+ </div>
+ </main>
+ </div>
+ <div class="toast" id="toast"></div>
+ <script src="student-portal.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,320 @@
+﻿<?php
+require_once 'config.php';
+
+// Require admin role
+requireRole('admin');
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Event Management System Admin</title>
+ <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="files (1)/admin-portal.css">
+</head>
+
+<body>
+ <div id="login-screen">
+ <div class="lcard">
+ <div class="llogo">Event Management System</div>
+ <div class="lbadge">Admin</div>
+ <h2>Administrator Access</h2>
+ <p class="lsub">Full system visibility view, approve, and manage everything.</p>
+ <div class="lerr" id="lerr"></div>
+ <div class="lfield"><label>Username</label><input type="text" id="un" placeholder="admin" autocomplete="off"></div>
+ <div class="lfield"><label>Password</label><input type="password" id="pw" placeholder="Password"></div>
+ <button class="btn-login" id="btn-login">Sign In</button>
+ <div class="lhint"><strong>Demo:</strong> admin / 123</div>
+ </div>
+ </div>
+ <div id="app">
+ <aside class="sb">
+ <div class="sb-head">
+ <div class="sb-logo">Event Management System</div>
+ <div class="sb-tag">Admin</div>
+ </div>
+ <nav class="sb-nav">
+ <div class="nl">Menu</div>
+ <a class="ni active" id="nav-dash">Dashboard</a>
+ <a class="ni" id="nav-events">All Events</a>
+ <a class="ni" id="nav-regs">Registrations</a>
+ <a class="ni" id="nav-users">Users</a>
+ <a class="ni" id="nav-res">Resources</a>
+ <a class="ni" id="nav-ann">Announcements</a>
+ <a class="ni" id="nav-reports">Reports</a>
+ <div class="nl" style="margin-top:18px;">Other Portals</div>
+ <a class="ni" href="student-portal.php">Student Portal</a>
+ <a class="ni" href="faculty-portal.php">Faculty Portal</a>
+ </nav>
+ <div class="sb-foot">
+ <div class="uc">
+ <div class="uav">A</div>
+ <div>
+ <div class="uname-d" id="uname"><?php echo htmlspecialchars($_SESSION['name']); ?></div>
+ <div class="urole-d">Administrator</div>
+ </div>
+ </div>
+ <button class="btn-lo" id="btn-logout">Sign Out</button>
+ </div>
+ </aside>
+ <main class="main">
+ <div class="pg active" id="pg-dash">
+ <div class="ph">
+ <div class="ph-t">
+ <h1>System Dashboard</h1>
+ <p>Complete overview of EventHub activity</p>
+ </div><button class="btn-rf" id="btn-rf-dash"> Refresh</button>
+ </div>
+ <div class="srow">
+ <div class="sbox">
+ <div class="si"></div>
+ <div class="sv" id="d-us">0</div>
+ <div class="sl">Total Users</div>
+ </div>
+ <div class="sbox">
+ <div class="si"></div>
+ <div class="sv" id="d-ev">0</div>
+ <div class="sl">Total Events</div>
+ </div>
+ <div class="sbox">
+ <div class="si"></div>
+ <div class="sv" id="d-rg">0</div>
+ <div class="sl">Registrations</div>
+ </div>
+ <div class="sbox">
+ <div class="si"></div>
+ <div class="sv" id="d-pe">0</div>
+ <div class="sl">Pending Approval</div>
+ </div>
+ <div class="sbox">
+ <div class="si"></div>
+ <div class="sv" id="d-an">0</div>
+ <div class="sl">Announcements</div>
+ </div>
+ </div>
+ <div class="tw">
+ <div class="tw-h">Pending Events - Awaiting Approval</div>
+ <table>
+ <thead>
+ <tr>
+ <th>Event Title</th>
+ <th>Organizer</th>
+ <th>Date</th>
+ <th>Category</th>
+ <th>Actions</th>
+ </tr>
+ </thead>
+ <tbody id="pend-tb"></tbody>
+ </table>
+ </div>
+ </div>
+ <div class="pg" id="pg-events">
+ <div class="ph">
+ <div class="ph-t">
+ <h1>All Events</h1>
+ <p>Every event submitted by faculty</p>
+ </div><button class="btn-rf" id="btn-rf-ev"> Refresh</button>
+ </div>
+ <div class="frow">
+ <button class="fb on" id="fa-all">All</button>
+ <button class="fb" id="fa-pending">Pending</button>
+ <button class="fb" id="fa-approved">Approved</button>
+ <button class="fb" id="fa-rejected">Rejected</button>
+ </div>
+ <div class="tw">
+ <table>
+ <thead>
+ <tr>
+ <th>Title</th>
+ <th>Organizer</th>
+ <th>Date</th>
+ <th>Category</th>
+ <th>Registrations</th>
+ <th>Status</th>
+ <th>Actions</th>
+ </tr>
+ </thead>
+ <tbody id="ev-tb"></tbody>
+ </table>
+ </div>
+ </div>
+ <div class="pg" id="pg-regs">
+ <div class="ph">
+ <div class="ph-t">
+ <h1>Student Registrations</h1>
+ <p>All student sign-ups across every event</p>
+ </div><button class="btn-rf" id="btn-rf-rg"> Refresh</button>
+ </div>
+ <div class="tw">
+ <table>
+ <thead>
+ <tr>
+ <th>Student</th>
+ <th>Event</th>
+ <th>Event Date</th>
+ <th>Organizer</th>
+ <th>Registered On</th>
+ </tr>
+ </thead>
+ <tbody id="rg-tb"></tbody>
+ </table>
+ </div>
+ </div>
+ <div class="pg" id="pg-users">
+ <div class="ph">
+ <div class="ph-t">
+ <h1>User Management</h1>
+ <p>All registered system users</p>
+ </div><button class="btn-rf" id="btn-rf-us"> Refresh</button>
+ </div>
+ <div class="tw">
+ <table>
+ <thead>
+ <tr>
+ <th>Name</th>
+ <th>Username</th>
+ <th>Email</th>
+ <th>Role</th>
+ <th>Status</th>
+ </tr>
+ </thead>
+ <tbody id="us-tb"></tbody>
+ </table>
+ </div>
+ </div>
+ <div class="pg" id="pg-res">
+ <div class="ph">
+ <div class="ph-t">
+ <h1>Resources & Venues</h1>
+ <p>All faculty-submitted resources and venue reservations</p>
+ </div><button class="btn-rf" id="btn-rf-rs"> Refresh</button>
+ </div>
+ <div class="tw">
+ <div class="tw-h">Resources</div>
+ <table>
+ <thead>
+ <tr>
+ <th>Name</th>
+ <th>Type</th>
+ <th>Qty</th>
+ <th>Event</th>
+ <th>Added By</th>
+ <th>Actions</th>
+ </tr>
+ </thead>
+ <tbody id="rs-tb"></tbody>
+ </table>
+ </div>
+ <div class="tw">
+ <div class="tw-h">Volunteers</div>
+ <table>
+ <thead>
+ <tr>
+ <th>Name</th>
+ <th>Email</th>
+ <th>Event</th>
+ <th>Task</th>
+ <th>Actions</th>
+ </tr>
+ </thead>
+ <tbody id="vo-tb"></tbody>
+ </table>
+ </div>
+ <div class="tw">
+ <div class="tw-h">Venue Reservations</div>
+ <table>
+ <thead>
+ <tr>
+ <th>Venue</th>
+ <th>Event</th>
+ <th>Date</th>
+ <th>Capacity</th>
+ <th>Reserved By</th>
+ <th>Actions</th>
+ </tr>
+ </thead>
+ <tbody id="vn-tb"></tbody>
+ </table>
+ </div>
+ </div>
+ <!-- ANNOUNCEMENTS PAGE -->
+ <div class="pg" id="pg-ann">
+ <div class="ph">
+ <div class="ph-t">
+ <h1>Announcements</h1>
+ <p>Post announcements visible to students, faculty, or everyone</p>
+ </div><button class="btn-rf" id="btn-rf-an"> Refresh</button>
+ </div>
+ <div class="fc">
+ <h3>Post New Announcement</h3>
+ <div class="arow">
+ <div class="afg"><label>Title *</label><input type="text" id="ann-title" placeholder="e.g. Campus Event Schedule Update"></div>
+ <div class="afg"><label>Priority *</label>
+ <select id="ann-priority">
+ <option value="normal">Normal</option>
+ <option value="important">Important</option>
+ <option value="urgent">Urgent</option>
+ </select>
+ </div>
+ </div>
+ <div class="arow">
+ <div class="afg"><label>Audience *</label>
+ <select id="ann-audience">
+ <option value="all">Everyone (Students + Faculty)</option>
+ <option value="students">Students Only</option>
+ <option value="faculty">Faculty Only</option>
+ </select>
+ </div>
+ <div class="afg"><label>Expiry Date (optional)</label><input type="date" id="ann-expiry"></div>
+ </div>
+ <div class="afb"><label>Message *</label><textarea id="ann-body" rows="4" placeholder="Write your announcement message here"></textarea></div>
+ <button class="btn-submit" id="btn-post-ann">Post Announcement</button>
+ </div>
+ <div id="ann-list-wrap">
+ <div class="emp" id="ann-empty" style="display:none;">No announcements posted yet.</div>
+ <div class="ann-list" id="ann-list"></div>
+ </div>
+ </div>
+ <div class="pg" id="pg-reports">
+ <div class="ph">
+ <div class="ph-t">
+ <h1>Reports & Analytics</h1>
+ <p>System-wide statistics and insights</p>
+ </div><button class="btn-rf" id="btn-rf-rp"> Refresh</button>
+ </div>
+ <div class="rgrid">
+ <div class="rcard">
+ <h4>Events by Status</h4>
+ <div id="rp-status"></div>
+ </div>
+ <div class="rcard">
+ <h4>Events by Category</h4>
+ <div id="rp-cat"></div>
+ </div>
+ <div class="rcard">
+ <h4>Top Events by Registrations</h4>
+ <div id="rp-top"></div>
+ </div>
+ <div class="rcard">
+ <h4>User Distribution</h4>
+ <div id="rp-users"></div>
+ </div>
+ <div class="rcard">
+ <h4>Faculty Activity</h4>
+ <div id="rp-org"></div>
+ </div>
+ <div class="rcard">
+ <h4>Recent Feedback</h4>
+ <div id="rp-fb"></div>
+ </div>
+ </div>
+ </div>
+ </main>
+ </div>
+ <div class="toast" id="toast"></div>
+ <script src="files (1)/admin-portal-php.js"></script>
+</body>
+
+</html>
